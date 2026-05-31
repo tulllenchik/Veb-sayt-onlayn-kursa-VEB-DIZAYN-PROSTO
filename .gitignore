@@ -1,0 +1,18 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+*.log
+
+# Local drafts and tooling (not part of the public release)
+_docs_output.txt
+_methodology.txt
+_p3_full.txt
+methodology_out.txt
+index-backup.html
+update_docx_practice2.py
+_m_*.txt
+practice-2/
+*_practice2.docx
+Тенденции проектирования*.docx

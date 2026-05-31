@@ -1,0 +1,1957 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ВЕБ-ДИЗАЙН.ПРОСТО — UX/UI-дизайн с нуля</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3693F3;
+            --primary-dark: #2A7DD4;
+            --accent: #88dd4d;
+            --accent-dark: #6BC136;
+            --bg: #F8F9FB;
+            --text: #24292F;
+            --text-secondary: #000038;
+            --error: #A20021;
+            --white: #FFFFFF;
+            --gray-light: #E8EBF0;
+            --gray: #6B7280;
+            --shadow: 0 4px 24px rgba(0,0,0,0.08);
+            --shadow-hover: 0 8px 40px rgba(54,147,243,0.18);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            transition: var(--transition);
+        }
+
+        .header.scrolled {
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .logo-img {
+            height: 44px;
+            width: auto;
+            display: block;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 600;
+            font-size: 15px;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        .nav a:hover {
+            color: var(--primary);
+        }
+
+        .nav a:hover::after {
+            width: 100%;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 16px rgba(54,147,243,0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(54,147,243,0.4);
+        }
+
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: var(--text-secondary);
+            box-shadow: 0 4px 16px rgba(136,221,77,0.3);
+        }
+
+        .btn-accent:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(136,221,77,0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-lg {
+            padding: 16px 40px;
+            font-size: 17px;
+        }
+
+        .header-cta {
+            flex-shrink: 0;
+        }
+
+        .burger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px;
+            z-index: 1001;
+        }
+
+        .burger span {
+            display: block;
+            width: 24px;
+            height: 2.5px;
+            background: var(--text);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        .burger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .burger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .burger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 72px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            padding: 40px 24px;
+            flex-direction: column;
+            gap: 24px;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: var(--transition);
+        }
+
+        .mobile-menu.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mobile-menu a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 700;
+            font-size: 22px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-light);
+            transition: var(--transition);
+        }
+
+        .mobile-menu a:hover {
+            color: var(--primary);
+            padding-left: 8px;
+        }
+
+        .mobile-menu .btn {
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            padding: 120px 24px 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .hero-content {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, rgba(54,147,243,0.1), rgba(136,221,77,0.1));
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 24px;
+            border: 1px solid rgba(54,147,243,0.15);
+        }
+
+        .hero-badge .pulse {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.5); }
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 5vw, 52px);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            letter-spacing: -1px;
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--gray);
+            margin-bottom: 36px;
+            line-height: 1.7;
+            max-width: 480px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 32px;
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid var(--gray-light);
+        }
+
+        .hero-stat-number {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .hero-stat-label {
+            font-size: 13px;
+            color: var(--gray);
+            font-weight: 600;
+        }
+
+        .hero-image {
+            position: relative;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero-image img {
+            width: 100%;
+            max-width: 560px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .hero-float-card {
+            position: absolute;
+            background: white;
+            border-radius: 16px;
+            padding: 16px 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .hero-float-card.card-1 {
+            bottom: 20%;
+            left: -30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero-float-card.card-2 {
+            top: 15%;
+            right: -20px;
+            animation-delay: 1.5s;
+        }
+
+        .float-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .float-icon.blue { background: rgba(54,147,243,0.15); }
+        .float-icon.green { background: rgba(136,221,77,0.2); }
+
+        .float-text {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .float-subtext {
+            font-size: 11px;
+            color: var(--gray);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== SECTIONS COMMON ===== */
+        .section {
+            padding: 100px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-label {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(54,147,243,0.1);
+            color: var(--primary);
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 900;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        .section-subtitle {
+            font-size: 17px;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ===== ADVANTAGES ===== */
+        .advantages {
+            background: var(--white);
+            border-radius: 32px;
+            margin: 0 24px;
+            padding: 80px 24px;
+        }
+
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .advantage-card {
+            background: var(--bg);
+            border-radius: var(--radius);
+            padding: 36px 28px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+            border: 1px solid transparent;
+        }
+
+        .advantage-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition);
+        }
+
+        .advantage-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(54,147,243,0.1);
+            background: white;
+        }
+
+        .advantage-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .advantage-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+
+        .advantage-card:hover .advantage-icon {
+            transform: scale(1.1);
+        }
+
+        .advantage-icon.blue {
+            background: linear-gradient(135deg, rgba(54,147,243,0.15), rgba(54,147,243,0.05));
+        }
+
+        .advantage-icon.green {
+            background: linear-gradient(135deg, rgba(136,221,77,0.2), rgba(136,221,77,0.05));
+        }
+
+        .advantage-icon.purple {
+            background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(139,92,246,0.05));
+        }
+
+        .advantage-icon.orange {
+            background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(245,158,11,0.05));
+        }
+
+        .advantage-title {
+            font-size: 17px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+        }
+
+        .advantage-text {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* ===== PROGRAM / ACCORDION ===== */
+        .program-section {
+            background: var(--bg);
+        }
+
+        .accordion {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .accordion-item {
+            background: white;
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            overflow: hidden;
+            border: 1px solid var(--gray-light);
+            transition: var(--transition);
+        }
+
+        .accordion-item.active {
+            border-color: var(--primary);
+            box-shadow: 0 4px 20px rgba(54,147,243,0.1);
+        }
+
+        .accordion-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 22px 28px;
+            cursor: pointer;
+            transition: var(--transition);
+            gap: 16px;
+        }
+
+        .accordion-header:hover {
+            background: rgba(54,147,243,0.03);
+        }
+
+        .accordion-header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .accordion-number {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 14px;
+            color: var(--primary);
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+
+        .accordion-item.active .accordion-number {
+            background: var(--primary);
+            color: white;
+        }
+
+        .accordion-title {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        .accordion-subtitle {
+            font-size: 13px;
+            color: var(--gray);
+            margin-top: 2px;
+        }
+
+        .accordion-arrow {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+
+        .accordion-item.active .accordion-arrow {
+            background: var(--primary);
+            transform: rotate(180deg);
+        }
+
+        .accordion-item.active .accordion-arrow svg {
+            stroke: white;
+        }
+
+        .accordion-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .accordion-content {
+            padding: 0 28px 28px 80px;
+        }
+
+        .accordion-content p {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .accordion-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .accordion-tag {
+            padding: 4px 12px;
+            background: rgba(54,147,243,0.08);
+            color: var(--primary);
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* ===== TESTIMONIALS ===== */
+        .testimonials-section {
+            background: var(--white);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonial-card {
+            background: var(--bg);
+            border-radius: var(--radius);
+            padding: 32px;
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+            border-color: rgba(54,147,243,0.1);
+        }
+
+        .testimonial-stars {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+        }
+
+        .star {
+            color: #FBBF24;
+            font-size: 18px;
+        }
+
+        .testimonial-text {
+            font-size: 15px;
+            color: var(--text);
+            line-height: 1.7;
+            margin-bottom: 24px;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .testimonial-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .testimonial-name {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--text-secondary);
+        }
+
+        .testimonial-role {
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        .partners {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 60px;
+            flex-wrap: wrap;
+            opacity: 0.5;
+        }
+
+        .partner-logo {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--gray);
+            letter-spacing: -0.5px;
+            transition: var(--transition);
+        }
+
+        .partner-logo:hover {
+            opacity: 1;
+            color: var(--primary);
+        }
+
+        /* ===== REGISTRATION FORM ===== */
+        .register-section {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 32px;
+            margin: 0 24px;
+            padding: 80px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .register-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(54,147,243,0.15), transparent 70%);
+            border-radius: 50%;
+        }
+
+        .register-section::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(136,221,77,0.1), transparent 70%);
+            border-radius: 50%;
+        }
+
+        .register-inner {
+            max-width: 560px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .register-section .section-label {
+            background: rgba(54,147,243,0.2);
+        }
+
+        .register-section .section-title {
+            color: white;
+        }
+
+        .register-section .section-subtitle {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: 12px;
+            border: 2px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.06);
+            color: white;
+            font-family: 'Nunito', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .form-input::placeholder {
+            color: rgba(255,255,255,0.3);
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            background: rgba(54,147,243,0.08);
+            box-shadow: 0 0 0 4px rgba(54,147,243,0.15);
+        }
+
+        .form-input.error {
+            border-color: var(--error);
+            box-shadow: 0 0 0 4px rgba(162,0,33,0.15);
+        }
+
+        .form-error {
+            font-size: 13px;
+            color: #FF6B6B;
+            margin-top: 6px;
+            display: none;
+            font-weight: 600;
+        }
+
+        .form-error.visible {
+            display: block;
+        }
+
+        .form-submit {
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .form-success {
+            display: none;
+            text-align: center;
+            padding: 32px;
+        }
+
+        .form-success.visible {
+            display: block;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .success-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 32px;
+        }
+
+        .form-success h3 {
+            color: white;
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .form-success p {
+            color: rgba(255,255,255,0.6);
+            font-size: 15px;
+        }
+
+        /* ===== FINAL CTA ===== */
+        .final-cta {
+            text-align: center;
+            padding: 100px 24px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .final-cta h2 {
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 900;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .final-cta p {
+            font-size: 17px;
+            color: var(--gray);
+            margin-bottom: 36px;
+        }
+
+        .final-cta .btn-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--text-secondary);
+            color: rgba(255,255,255,0.7);
+            padding: 60px 24px 32px;
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
+
+        .footer-brand p {
+            font-size: 14px;
+            line-height: 1.7;
+            margin-top: 16px;
+            max-width: 280px;
+        }
+
+        .footer-logo {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .footer-logo .logo-img {
+            height: 40px;
+        }
+
+        .footer h4 {
+            color: white;
+            font-size: 15px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            padding-left: 4px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 18px;
+            transition: var(--transition);
+        }
+
+        .footer-social a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 40px auto 0;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-bottom p {
+            font-size: 13px;
+        }
+
+        .footer-bottom a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            font-size: 13px;
+            transition: var(--transition);
+        }
+
+        .footer-bottom a:hover {
+            color: var(--primary);
+        }
+
+        /* ===== SCROLL ANIMATIONS ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                min-height: auto;
+                padding-top: 100px;
+                text-align: center;
+            }
+
+            .hero-subtitle {
+                margin: 0 auto 36px;
+            }
+
+            .hero-actions {
+                justify-content: center;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .hero-image {
+                order: -1;
+            }
+
+            .hero-image img {
+                max-width: 400px;
+                margin: 0 auto;
+                display: block;
+            }
+
+            .hero-float-card {
+                display: none;
+            }
+
+            .advantages-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .testimonials-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-inner {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+
+            .header-cta {
+                display: none;
+            }
+
+            .burger {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .advantages-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .advantages {
+                margin: 0 12px;
+                padding: 60px 16px;
+                border-radius: 24px;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .register-section {
+                margin: 0 12px;
+                padding: 60px 16px;
+                border-radius: 24px;
+            }
+
+            .footer-inner {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .accordion-content {
+                padding-left: 28px;
+            }
+
+            .section {
+                padding: 60px 16px;
+            }
+
+            .partners {
+                gap: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-stats {
+                flex-direction: column;
+                gap: 16px;
+                align-items: center;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .hero-actions .btn {
+                width: 100%;
+            }
+
+            .final-cta .btn-group {
+                flex-direction: column;
+            }
+
+            .final-cta .btn-group .btn {
+                width: 100%;
+            }
+        }
+
+        /* ===== CUSTOM SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* ===== LOADING ===== */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--white);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--gray-light);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Page Loader -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-inner">
+            <a href="#hero" class="logo">
+                <img src="images/logo.png" alt="ВЕБ-ДИЗАЙН.ПРОСТО" class="logo-img">
+            </a>
+            <nav class="nav">
+                <a href="#about">О курсе</a>
+                <a href="#program">Программа</a>
+                <a href="#testimonials">Отзывы</a>
+                <a href="#register">Регистрация</a>
+            </nav>
+            <a href="#register" class="btn btn-primary header-cta">Записаться на курс</a>
+            <button class="burger" id="burger" aria-label="Меню">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#about" class="mobile-link">О курсе</a>
+        <a href="#program" class="mobile-link">Программа</a>
+        <a href="#testimonials" class="mobile-link">Отзывы</a>
+        <a href="#register" class="mobile-link">Регистрация</a>
+        <a href="#register" class="btn btn-primary btn-lg mobile-link">Записаться на курс</a>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="pulse"></span>
+                Набор открыт — старт потока 15 июня
+            </div>
+            <h1>Стань <span class="highlight">UX/UI-дизайнером</span> с нуля</h1>
+            <p class="hero-subtitle">Практический курс с реальными проектами и подготовкой портфолио. Учись веб-дизайну просто — от первого скетча до готового макета.</p>
+            <div class="hero-actions">
+                <a href="#register" class="btn btn-primary btn-lg">Записаться на курс</a>
+                <a href="#program" class="btn btn-outline btn-lg">Смотреть программу</a>
+            </div>
+            <div class="hero-stats">
+                <div>
+                    <div class="hero-stat-number">1 200+</div>
+                    <div class="hero-stat-label">выпускников</div>
+                </div>
+                <div>
+                    <div class="hero-stat-number">94%</div>
+                    <div class="hero-stat-label">находят работу</div>
+                </div>
+                <div>
+                    <div class="hero-stat-number">4.9 ★</div>
+                    <div class="hero-stat-label">средний рейтинг</div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://image.qwenlm.ai/public_source/06f7f9e1-30e3-4b0e-98eb-80ca694a798c/12dc934f9-6ce3-4dbd-93db-2f56674ac5de.png" alt="UX/UI дизайн на ноутбуке">
+            <div class="hero-float-card card-1">
+                <div class="float-icon blue"></div>
+                <div>
+                    <div class="float-text">Figma + Sketch</div>
+                    <div class="float-subtext">Все инструменты</div>
+                </div>
+            </div>
+            <div class="hero-float-card card-2">
+                <div class="float-icon green">✅</div>
+                <div>
+                    <div class="float-text">8 модулей</div>
+                    <div class="float-subtext">12 недель обучения</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advantages -->
+    <section class="advantages" id="about">
+        <div class="section-header reveal">
+            <span class="section-label">Преимущества</span>
+            <h2 class="section-title">Почему выбрать этот курс</h2>
+            <p class="section-subtitle">Мы создали программу, которая закрывает все боли начинающих дизайнеров</p>
+        </div>
+        <div class="advantages-grid">
+            <div class="advantage-card reveal">
+                <div class="advantage-icon blue">🚀</div>
+                <h3 class="advantage-title">Практика на реальных проектах</h3>
+                <p class="advantage-text">За время обучения вы выполните 5 полноценных проектов, которые можно включить в портфолио</p>
+            </div>
+            <div class="advantage-card reveal">
+                <div class="advantage-icon green">👨‍🏫</div>
+                <h3 class="advantage-title">Куратор с опытом работы</h3>
+                <p class="advantage-text">Персональная обратная связь от практикующего дизайнера с опытом 8+ лет в ведущих студиях</p>
+            </div>
+            <div class="advantage-card reveal">
+                <div class="advantage-icon purple">📁</div>
+                <h3 class="advantage-title">Подготовка портфолио</h3>
+                <p class="advantage-text">К концу курса у вас будет готовое портфолио, которое привлечёт внимание работодателей</p>
+            </div>
+            <div class="advantage-card reveal">
+                <div class="advantage-icon orange">⏰</div>
+                <h3 class="advantage-title">Онлайн в удобное время</h3>
+                <p class="advantage-text">Учитесь в своём темпе — видеолекции доступны 24/7, а живые вебинары проходят по вечерам</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Program -->
+    <section class="section program-section" id="program">
+        <div class="section-header reveal">
+            <span class="section-label">Программа</span>
+            <h2 class="section-title">Чему вы научитесь</h2>
+            <p class="section-subtitle">8 модулей, 12 недель практики — от основ до продвинутых техник</p>
+        </div>
+        <div class="accordion reveal" id="accordion">
+            <div class="accordion-item active">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="accordion-header-left">
+                        <div class="accordion-number">01</div>
+                        <div>
+                            <div class="accordion-title">Введение в UX/UI-дизайн</div>
+                            <div class="accordion-subtitle">Основы и принципы дизайна</div>
+                        </div>
+                    </div>
+                    <div class="accordion-arrow">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M4 6L8 10L12 6" stroke="#24292F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="accordion-body" style="max-height: 300px;">
+                    <div class="accordion-content">
+                        <p>Познакомитесь с миром UX/UI-дизайна: узнаете, чем UX отличается от UI, изучите основные принципы юзабилити и познакомитесь с процессом дизайн-мышления.</p>
+                        <div class="accordion-tags">
+                            <span class="accordion-tag">UX-исследование</span>
+                            <span class="accordion-tag">Персоны</span>
+                            <span class="accordion-tag">Дизайн-мышление</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="accordion-header-left">
+                        <div class="accordion-number">02</div>
+                        <div>
+                            <div class="accordion-title">Работа в Figma</div>
+                            <div class="accordion-subtitle">Основной инструмент дизайнера</div>
+                        </div>
+                    </div>
+                    <div class="accordion-arrow">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M4 6L8 10L12 6" stroke="#24292F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <p>Освоите Figma от А до Я: компоненты, авто-лейауты, прототипирование, совместная работа. Создадите свою первую библиотеку компонентов.</p>
+                        <div class="accordion-tags">
+                            <span class="accordion-tag">Компоненты</span>
+                            <span class="accordion-tag">Авто-лейаут</span>
+                            <span class="accordion-tag">Прототипы</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="accordion-header-left">
+                        <div class="accordion-number">03</div>
+                        <div>
+                            <div class="accordion-title">Типографика и цвет</div>
+                            <div class="accordion-subtitle">Визуальная иерархия интерфейса</div>
+                        </div>
+                    </div>
+                    <div class="accordion-arrow">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M4 6L8 10L12 6" stroke="#24292F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <p>Научитесь подбирать шрифтовые пары, работать с цветовыми палитрами, создавать визуальную иерархию и управлять вниманием пользователя.</p>
+                        <div class="accordion-tags">
+                            <span class="accordion-tag">Шрифты</span>
+                            <span class="accordion-tag">Цветовые системы</span>
+                            <span class="accordion-tag">Иерархия</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="accordion-header-left">
+                        <div class="accordion-number">04</div>
+                        <div>
+                            <div class="accordion-title">Проектирование пользовательского опыта</div>
+                            <div class="accordion-subtitle">UX-исследования и тестирование</div>
+                        </div>
+                    </div>
+                    <div class="accordion-arrow">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M4 6L8 10L12 6" stroke="#24292F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <p>Проведёте пользовательское исследование, создадите карту путей пользователя (CJM), спроектируете wireframes и протестируете решения на реальных людях.</p>
+                        <div class="accordion-tags">
+                            <span class="accordion-tag">CJM</span>
+                            <span class="accordion-tag">Wireframes</span>
+                            <span class="accordion-tag">Юзабилити-тесты</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="accordion-header-left">
+                        <div class="accordion-number">05</div>
+                        <div>
+                            <div class="accordion-title">Дизайн мобильного приложения</div>
+                            <div class="accordion-subtitle">iOS и Android гайдлайны</div>
+                        </div>
+                    </div>
+                    <div class="accordion-arrow">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M4 6L8 10L12 6" stroke="#24292F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <p>Спроектируете мобильное приложение с учётом гайдлайнов Apple HIG и Material Design. Создадите адаптивные экраны и интерактивные прототипы.</p>
+                        <div class="accordion-tags">
+                            <span class="accordion-tag">Material Design</span>
+                            <span class="accordion-tag">HIG</span>
+                            <span class="accordion-tag">Адаптивность</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="accordion-header-left">
+                        <div class="accordion-number">06</div>
+                        <div>
+                            <div class="accordion-title">Дизайн веб-интерфейсов</div>
+                            <div class="accordion-subtitle">Сайты, дашборды, лендинги</div>
+                        </div>
+                    </div>
+                    <div class="accordion-arrow">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M4 6L8 10L12 6" stroke="#24292F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <p>Научитесь проектировать десктопные интерфейсы: корпоративные сайты, SaaS-дашборды, интернет-магазины. Разберёте сетки, адаптивность и responsive-дизайн.</p>
+                        <div class="accordion-tags">
+                            <span class="accordion-tag">Grid-системы</span>
+                            <span class="accordion-tag">Responsive</span>
+                            <span class="accordion-tag">SaaS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="accordion-header-left">
+                        <div class="accordion-number">07</div>
+                        <div>
+                            <div class="accordion-title">Дизайн-системы</div>
+                            <div class="accordion-subtitle">Масштабируемый подход к дизайну</div>
+                        </div>
+                    </div>
+                    <div class="accordion-arrow">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M4 6L8 10L12 6" stroke="#24292F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <p>Создадите собственную дизайн-систему: токены, компоненты, паттерны. Научитесь работать с variatns, auto-layout и документировать решения.</p>
+                        <div class="accordion-tags">
+                            <span class="accordion-tag">Токены</span>
+                            <span class="accordion-tag">Варианты</span>
+                            <span class="accordion-tag">Документация</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <div class="accordion-header-left">
+                        <div class="accordion-number">08</div>
+                        <div>
+                            <div class="accordion-title">Портфолио и трудоустройство</div>
+                            <div class="accordion-subtitle">Финальный проект и карьера</div>
+                        </div>
+                    </div>
+                    <div class="accordion-arrow">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M4 6L8 10L12 6" stroke="#24292F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="accordion-body">
+                    <div class="accordion-content">
+                        <p>Оформите портфолио на Behance и создадите личный сайт-визитку. Получите рекомендации по поиску первой работы и подготовке к собеседованиям.</p>
+                        <div class="accordion-tags">
+                            <span class="accordion-tag">Behance</span>
+                            <span class="accordion-tag">Резюме</span>
+                            <span class="accordion-tag">Собеседования</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section testimonials-section" id="testimonials">
+        <div class="section-header reveal">
+            <span class="section-label">Отзывы</span>
+            <h2 class="section-title">Что говорят наши выпускники</h2>
+            <p class="section-subtitle">Реальные истории людей, которые изменили свою карьеру</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card reveal">
+                <div class="testimonial-stars">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                </div>
+                <p class="testimonial-text">«Курс полностью перевернул моё представление о дизайне. Через 3 месяца после окончания я устроилась UX-дизайнером в IT-компанию с зарплатой, о которой раньше могла только мечтать.»</p>
+                <div class="testimonial-author">
+                    <img src="https://image.qwenlm.ai/public_source/06f7f9e1-30e3-4b0e-98eb-80ca694a798c/1d6115811-29d8-4bd5-be0d-17142d3b3fe7.png" alt="Анна К." class="testimonial-avatar">
+                    <div>
+                        <div class="testimonial-name">Анна Козлова</div>
+                        <div class="testimonial-role">UX-дизайнер в Яндекс</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card reveal">
+                <div class="testimonial-stars">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                </div>
+                <p class="testimonial-text">«Пришёл с нулевым опытом, но куратор объяснял так понятно, что всё казалось логичным. Особенно понравился модуль по дизайн-системам — это реально пригодилось на работе.»</p>
+                <div class="testimonial-author">
+                    <img src="https://image.qwenlm.ai/public_source/06f7f9e1-30e3-4b0e-98eb-80ca694a798c/1a6b63d08-eb85-4640-a2e3-6a90431fbfc4.png" alt="Дмитрий М." class="testimonial-avatar">
+                    <div>
+                        <div class="testimonial-name">Дмитрий Морозов</div>
+                        <div class="testimonial-role">UI-дизайнер в Тинькофф</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card reveal">
+                <div class="testimonial-stars">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                </div>
+                <p class="testimonial-text">«Я работала маркетологом и хотела перейти в дизайн. Курс дал мне не только навыки, но и уверенность. Портфолио, которое я собрала, произвело впечатление на всех работодателей.»</p>
+                <div class="testimonial-author">
+                    <img src="https://image.qwenlm.ai/public_source/06f7f9e1-30e3-4b0e-98eb-80ca694a798c/1aa554dfc-6493-4e0e-8302-f5301e961249.png" alt="Елена С." class="testimonial-avatar">
+                    <div>
+                        <div class="testimonial-name">Елена Смирнова</div>
+                        <div class="testimonial-role">Product Designer в Сбер</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card reveal">
+                <div class="testimonial-stars">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                </div>
+                <p class="testimonial-text">«Лучший курс по дизайну, который я прошёл. Структура идеальная: теория сразу закрепляется практикой. Куратор всегда на связи и даёт развёрнутую обратную связь.»</p>
+                <div class="testimonial-author">
+                    <img src="https://image.qwenlm.ai/public_source/06f7f9e1-30e3-4b0e-98eb-80ca694a798c/104051e07-8e73-4963-878c-e8db1058aed9.png" alt="Артём В." class="testimonial-avatar">
+                    <div>
+                        <div class="testimonial-name">Артём Волков</div>
+                        <div class="testimonial-role">UX-дизайнер в VK</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card reveal">
+                <div class="testimonial-stars">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                </div>
+                <p class="testimonial-text">«Мне 32 года, и я думала, что поздно менять профессию. Курс доказал обратное! Сейчас я фрилансер и зарабатываю больше, чем на предыдущей работе.»</p>
+                <div class="testimonial-author">
+                    <img src="https://image.qwenlm.ai/public_source/06f7f9e1-30e3-4b0e-98eb-80ca694a798c/1836c9a91-5c32-4552-9c31-66ad4c42a302.png" alt="Мария Л." class="testimonial-avatar">
+                    <div>
+                        <div class="testimonial-name">Мария Лебедева</div>
+                        <div class="testimonial-role">Фриланс-дизайнер</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card reveal">
+                <div class="testimonial-stars">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                </div>
+                <p class="testimonial-text">«После курса я не просто научился рисовать красивые интерфейсы — я научился думать как дизайнер. Это бесценный навык для карьеры в IT.»</p>
+                <div class="testimonial-author">
+                    <img src="https://image.qwenlm.ai/public_source/06f7f9e1-30e3-4b0e-98eb-80ca694a798c/1a6b63d08-eb85-4640-a2e3-6a90431fbfc4.png" alt="Игорь П." class="testimonial-avatar">
+                    <div>
+                        <div class="testimonial-name">Игорь Петров</div>
+                        <div class="testimonial-role">Senior Designer в Avito</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="partners reveal">
+            <span class="partner-logo">Яндекс</span>
+            <span class="partner-logo">Сбер</span>
+            <span class="partner-logo">Тинькофф</span>
+            <span class="partner-logo">VK</span>
+            <span class="partner-logo">Avito</span>
+            <span class="partner-logo">Ozon</span>
+            <span class="partner-logo">Wildberries</span>
+        </div>
+    </section>
+
+    <!-- Registration Form -->
+    <section class="register-section" id="register">
+        <div class="register-inner">
+            <div class="section-header reveal">
+                <span class="section-label">Регистрация</span>
+                <h2 class="section-title">Запишитесь на курс</h2>
+                <p class="section-subtitle">Заполните форму и мы отправим вам подробности о программе и стоимости обучения</p>
+            </div>
+            <form id="registerForm" class="reveal" novalidate>
+                <div class="form-group">
+                    <label class="form-label" for="userName">Ваше имя</label>
+                    <input type="text" id="userName" class="form-input" placeholder="Введите ваше имя" required>
+                    <div class="form-error" id="nameError">Пожалуйста, введите ваше имя</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="userEmail">Электронная почта</label>
+                    <input type="email" id="userEmail" class="form-input" placeholder="example@mail.ru" required>
+                    <div class="form-error" id="emailError">Пожалуйста, введите корректный email-адрес</div>
+                </div>
+                <button type="submit" class="btn btn-accent btn-lg form-submit">Отправить заявку</button>
+            </form>
+            <div class="form-success" id="formSuccess">
+                <div class="success-icon">✓</div>
+                <h3>Заявка отправлена!</h3>
+                <p>Мы свяжемся с вами в ближайшее время. Проверьте вашу электронную почту.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta reveal">
+        <h2>Готовы начать путь в UX/UI-дизайн?</h2>
+        <p>Присоединяйтесь к 1 200+ выпускников, которые уже построили карьеру мечты. Следующий поток стартует 15 июня.</p>
+        <div class="btn-group">
+            <a href="#register" class="btn btn-primary btn-lg">Записаться на курс</a>
+            <a href="#program" class="btn btn-outline btn-lg">Изучить программу</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <a href="#hero" class="footer-logo">
+                    <img src="images/logo.png" alt="ВЕБ-ДИЗАЙН.ПРОСТО" class="logo-img">
+                </a>
+                <p>Образовательный онлайн-курс по UX/UI-дизайну. Помогаем начинающим дизайнерам освоить профессию и построить карьеру в IT.</p>
+                <div class="footer-social">
+                    <a href="#" aria-label="Telegram">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    </a>
+                    <a href="#" aria-label="VK">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.391 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-2.05-1.727-1.033-1-1.49-1.135-1.744-1.135-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4.03 8.57 4.03 8.096c0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.677.863 2.49 2.303 4.675 2.896 4.675.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.71 0-.204.17-.407.44-.407h2.744c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.254-1.406 2.151-3.574 2.151-3.574.119-.254.322-.491.763-.491h1.744c.525 0 .644.27.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.49-.085.744-.576.744z"/></svg>
+                    </a>
+                    <a href="#" aria-label="YouTube">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h4>Навигация</h4>
+                <ul class="footer-links">
+                    <li><a href="#about">О курсе</a></li>
+                    <li><a href="#program">Программа</a></li>
+                    <li><a href="#testimonials">Отзывы</a></li>
+                    <li><a href="#register">Регистрация</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Контакты</h4>
+                <ul class="footer-links">
+                    <li><a href="mailto:info@web-design.prosto">info@web-design.prosto</a></li>
+                    <li><a href="tel:+78001234567">8 (800) 123-45-67</a></li>
+                    <li><a href="#">Москва, ул. Примерная, 42</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Документы</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Политика конфиденциальности</a></li>
+                    <li><a href="#">Пользовательское соглашение</a></li>
+                    <li><a href="#">Оферта</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 ВЕБ-ДИЗАЙН.ПРОСТО. Все права защищены.</p>
+            <a href="#">Образовательная лицензия №XXXX</a>
+        </div>
+    </footer>
+
+    <script>
+        // Page Loader
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('pageLoader').classList.add('hidden');
+            }, 500);
+        });
+
+        // Header scroll effect
+        var headerEl = document.getElementById('header');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                headerEl.classList.add('scrolled');
+            } else {
+                headerEl.classList.remove('scrolled');
+            }
+        });
+
+        // Burger menu
+        var burgerBtn = document.getElementById('burger');
+        var mobileMenu = document.getElementById('mobileMenu');
+
+        burgerBtn.addEventListener('click', function() {
+            burgerBtn.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
+
+        // Close mobile menu on link click
+        var mobileLinks = document.querySelectorAll('.mobile-link');
+        mobileLinks.forEach(function(link) {
+            link.addEventListener('click', function() {
+                burgerBtn.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Accordion
+        function toggleAccordion(headerEl) {
+            var item = headerEl.parentElement;
+            var isActive = item.classList.contains('active');
+            var allItems = document.querySelectorAll('.accordion-item');
+
+            // Close all
+            allItems.forEach(function(el) {
+                el.classList.remove('active');
+                el.querySelector('.accordion-body').style.maxHeight = null;
+            });
+
+            // Open clicked if it was closed
+            if (!isActive) {
+                item.classList.add('active');
+                var body = item.querySelector('.accordion-body');
+                body.style.maxHeight = body.scrollHeight + 'px';
+            }
+        }
+
+        // Form validation
+        var form = document.getElementById('registerForm');
+        var nameInput = document.getElementById('userName');
+        var emailInput = document.getElementById('userEmail');
+        var nameError = document.getElementById('nameError');
+        var emailError = document.getElementById('emailError');
+        var formSuccess = document.getElementById('formSuccess');
+
+        function validateEmail(email) {
+            var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var isValid = true;
+
+            // Reset errors
+            nameInput.classList.remove('error');
+            emailInput.classList.remove('error');
+            nameError.classList.remove('visible');
+            emailError.classList.remove('visible');
+
+            // Validate name
+            if (!nameInput.value.trim()) {
+                nameInput.classList.add('error');
+                nameError.classList.add('visible');
+                isValid = false;
+            }
+
+            // Validate email
+            if (!emailInput.value.trim() || !validateEmail(emailInput.value.trim())) {
+                emailInput.classList.add('error');
+                emailError.classList.add('visible');
+                isValid = false;
+            }
+
+            if (isValid) {
+                form.style.display = 'none';
+                formSuccess.classList.add('visible');
+            }
+        });
+
+        // Real-time validation
+        nameInput.addEventListener('input', function() {
+            if (nameInput.value.trim()) {
+                nameInput.classList.remove('error');
+                nameError.classList.remove('visible');
+            }
+        });
+
+        emailInput.addEventListener('input', function() {
+            if (validateEmail(emailInput.value.trim())) {
+                emailInput.classList.remove('error');
+                emailError.classList.remove('visible');
+            }
+        });
+
+        // Scroll reveal animations
+        var revealElements = document.querySelectorAll('.reveal');
+
+        function checkReveal() {
+            var windowHeight = window.innerHeight;
+            revealElements.forEach(function(el) {
+                var elementTop = el.getBoundingClientRect().top;
+                var revealPoint = 120;
+                if (elementTop < windowHeight - revealPoint) {
+                    el.classList.add('visible');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', checkReveal);
+        window.addEventListener('load', checkReveal);
+
+        // Smooth scroll for all anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                var targetId = this.getAttribute('href');
+                var target = document.querySelector(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
