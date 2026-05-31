@@ -8,18 +8,11 @@
 
 ## Демо
 
-После публикации на GitHub Pages сайт будет доступен по адресу:
+**https://tulllenchik.github.io/Veb-sayt-onlayn-kursa-VEB-DIZAYN-PROSTO/**
 
-`https://tulllenchik.github.io/Веб-сайт-онлайн-курса-ВЕБ-ДИЗАЙН.ПРОСТО/`
+Репозиторий: **https://github.com/tulllenchik/Veb-sayt-onlayn-kursa-VEB-DIZAYN-PROSTO**
 
-### Публикация
-
-1. Авторизуйтесь в GitHub CLI: `gh auth login`
-2. Запустите скрипт деплоя из корня проекта:
-
-```powershell
-.\deploy.ps1
-```
+> Название проекта: *Веб сайт онлайн курса ВЕБ-ДИЗАЙН.ПРОСТО*
 
 ## О проекте
 

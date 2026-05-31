@@ -1,6 +1,6 @@
 # Publish coursework to GitHub and enable GitHub Pages
 $ErrorActionPreference = 'Stop'
-$RepoName = 'Веб-сайт-онлайн-курса-ВЕБ-ДИЗАЙН.ПРОСТО'
+$RepoName = 'Veb-sayt-onlayn-kursa-VEB-DIZAYN-PROSTO'
 
 Set-Location $PSScriptRoot
 
