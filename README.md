@@ -8,11 +8,18 @@
 
 ## Демо
 
-После публикации сайт доступен на GitHub Pages:
+После публикации на GitHub Pages сайт будет доступен по адресу:
 
-**https://USERNAME.github.io/web-design-prosto/**
+`https://username.github.io/web-design-prosto/`
 
-(ссылка обновится после деплоя)
+### Публикация
+
+1. Авторизуйтесь в GitHub CLI: `gh auth login`
+2. Запустите скрипт деплоя из корня проекта:
+
+```powershell
+.\deploy.ps1
+```
 
 ## О проекте
 
