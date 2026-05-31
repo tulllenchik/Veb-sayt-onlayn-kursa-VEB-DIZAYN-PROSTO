@@ -10,7 +10,7 @@
 
 После публикации на GitHub Pages сайт будет доступен по адресу:
 
-`https://username.github.io/web-design-prosto/`
+`https://tulllenchik.github.io/Веб-сайт-онлайн-курса-ВЕБ-ДИЗАЙН.ПРОСТО/`
 
 ### Публикация
 
